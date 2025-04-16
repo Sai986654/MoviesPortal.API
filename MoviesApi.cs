@@ -11,6 +11,7 @@ namespace MoviesPortal.API
             // GET /api/movies with try-catch
             app.MapGet("/api/movies", async (HttpContext context) =>
             {
+                var db = context.RequestServices.GetRequiredService<MoviesDbContext>();
                 try
                 {
                     return Results.Ok(await db.Movies.ToListAsync());
