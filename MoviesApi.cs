@@ -9,11 +9,11 @@ namespace MoviesPortal.API
         public static void MapMoviesEndpoints(this WebApplication app)
         {
             // GET /api/movies with try-catch
-            app.MapGet("/api/movies", async (MoviesDbContext db) =>
+            app.MapGet("/api/movies", async (HttpContext context) =>
             {
                 try
                 {
-                    return await db.Movies.ToListAsync();
+                    return Results.Ok(await db.Movies.ToListAsync());
                 }
                 catch (Exception ex)
                 {
@@ -24,8 +24,9 @@ namespace MoviesPortal.API
             });
 
             // POST /api/movies with try-catch
-            app.MapPost("/api/movies", async (MoviesDbContext db, Movie movie) =>
+            app.MapPost("/api/movies", async (HttpContext context, Movie movie) =>
             {
+                var db = context.RequestServices.GetRequiredService<MoviesDbContext>();
                 try
                 {
                     db.Movies.Add(movie);
