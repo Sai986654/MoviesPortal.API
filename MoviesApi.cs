@@ -18,6 +18,9 @@ namespace MoviesPortal.API
                 return Results.Created($"/api/movies/{movie.Id}", movie);
             });
 
+            // New endpoint to test if the app is working
+            app.MapGet("/", () => "Hello, this app is working! - April 16, 2025");
+
         }
     }
 
