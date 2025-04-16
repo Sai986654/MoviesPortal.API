@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MoviesPortal.API.Models;
 using System;
 
@@ -8,20 +8,40 @@ namespace MoviesPortal.API
     {
         public static void MapMoviesEndpoints(this WebApplication app)
         {
+            // GET /api/movies with try-catch
             app.MapGet("/api/movies", async (MoviesDbContext db) =>
-            await db.Movies.ToListAsync());
-
-            app.MapPost("/api/movies", async (MoviesDbContext db, Movie movie) =>
             {
-                db.Movies.Add(movie);
-                await db.SaveChangesAsync();
-                return Results.Created($"/api/movies/{movie.Id}", movie);
+                try
+                {
+                    return await db.Movies.ToListAsync();
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (ensure ILogger is injected or use a logging framework)
+                    // Example: app.Logger.LogError(ex, "Error retrieving movies");
+                    return Results.Problem($"Error: {ex.Message}");
+                }
             });
 
-            // New endpoint to test if the app is working
-            app.MapGet("/", () => "Hello, this app is working! - April 16, 2025");
+            // POST /api/movies with try-catch
+            app.MapPost("/api/movies", async (MoviesDbContext db, Movie movie) =>
+            {
+                try
+                {
+                    db.Movies.Add(movie);
+                    await db.SaveChangesAsync();
+                    return Results.Created($"/api/movies/{movie.Id}", movie);
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception
+                    // Example: app.Logger.LogError(ex, "Error adding movie");
+                    return Results.Problem($"Error: {ex.Message}");
+                }
+            });
 
+            // Test endpoint
+            app.MapGet("/", () => "Hello, this app is working! - April 16, 2025");
         }
     }
-
 }
