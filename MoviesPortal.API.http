@@ -1,0 +1,6 @@
+@MoviesPortal.API_HostAddress = http://localhost:5126
+
+GET {{MoviesPortal.API_HostAddress}}/api/movies/
+Accept: application/json
+
+###
