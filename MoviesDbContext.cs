@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MoviesPortal.API.Models;
 
 namespace MoviesPortal.API
 {
-    public class MoviesDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
-        public MoviesDbContext(DbContextOptions<MoviesDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Movie> Movies { get; set; }
     }
